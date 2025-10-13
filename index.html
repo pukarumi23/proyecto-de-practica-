@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Química Neón Verde</title>
+  <style>
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+
+    /* Paleta */
+    :root{
+      --bg:#050607; /* negro profundo */
+      --panel:#071017; /* azul muy oscuro */
+      --neon:#00ff7a; /* verde neón */
+      --muted:#8da3a0;
+    }
+
+    body{
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial; 
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,122,0.04), transparent),
+                  radial-gradient(800px 400px at 90% 90%, rgba(0,255,122,0.03), transparent),
+                  var(--bg);
+      color:#e6fff6;
+      -webkit-font-smoothing:antialiased;
+      padding:36px;
+    }
+
+    .container{
+      max-width:1000px;margin:0 auto;padding:36px;background:linear-gradient(180deg,rgba(255,255,255,0.01), rgba(255,255,255,0.005));border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    /* Cabecera neón */
+    header{display:flex;gap:20px;align-items:center}
+    .logo{
+      width:96px;height:96px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.3), rgba(255,255,255,0.02));backdrop-filter:blur(6px);border:1px solid rgba(0,255,122,0.08);
+      box-shadow:0 6px 24px rgba(0,255,122,0.08), 0 0 32px rgba(0,255,122,0.06);
+    }
+
+    /* SVG stroke glow */
+    .logo svg{filter:drop-shadow(0 0 6px rgba(0,255,122,0.8)) drop-shadow(0 0 18px rgba(0,255,122,0.14));}
+
+    h1{
+      font-size:2.05rem;line-height:1.05;letter-spacing:0.6px;
+      color:var(--neon);
+      text-shadow:
+        0 0 6px rgba(0,255,122,0.85),
+        0 0 18px rgba(0,255,122,0.45),
+        0 4px 20px rgba(0,0,0,0.7);
+      margin-bottom:6px;
+    }
+
+    p.lead{color:var(--muted);margin-top:6px;font-size:0.95rem}
+
+    /* Tarjetas */
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:20px}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
+
+    .neon-text{
+      color:var(--neon);
+      font-weight:600;
+      text-shadow:0 0 8px rgba(0,255,122,0.9), 0 0 22px rgba(0,255,122,0.2);
+    }
+
+    /* Botón con borde de neón */
+    .btn{
+      display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid rgba(0,255,122,0.18);background:transparent;color:var(--neon);font-weight:600;cursor:pointer;text-decoration:none;transition:all .18s ease;
+      box-shadow:0 6px 24px rgba(0,255,122,0.04), inset 0 -6px 20px rgba(0,0,0,0.3);
+    }
+    .btn:hover{transform:translateY(-3px);box-shadow:0 12px 48px rgba(0,255,122,0.12)}
+
+    /* Molecula SVG grande */
+    .molecule{display:flex;align-items:center;justify-content:center;height:220px}
+    .molecule svg{width:100%;height:100%;max-width:420px;filter:drop-shadow(0 0 10px rgba(0,255,122,0.75))}
+
+    /* Detalles y animacion de burbujas */
+    .bubble{position:relative}
+    .bubble::after{content:'';position:absolute;right:10px;bottom:8px;width:10px;height:10px;border-radius:50%;background:rgba(0,255,122,0.16);box-shadow:0 0 14px rgba(0,255,122,0.6);animation:float 3s infinite ease-in-out}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+
+    /* Tabla de info */
+    .info-row{display:flex;gap:12px;align-items:center;margin:10px 0}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--neon);box-shadow:0 0 8px rgba(0,255,122,0.9)}
+
+    footer{margin-top:22px;color:var(--muted);font-size:0.88rem;text-align:center}
+
+    /* Responsive */
+    @media (max-width:880px){.grid{grid-template-columns:1fr;margin-top:16px}.logo{width:76px;height:76px}.molecule{height:160px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <!-- Matraz SVG estilizado -->
+        <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path d="M20 6h24" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M26 10v6" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M38 10v6" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M18 20c0 8 6 14 8 20 2 6 0 12 0 12h12s-2-6 0-12c2-6 8-12 8-20H18z" stroke="url(#g)" stroke-width="2.5" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#9bffb8" stop-opacity="1" />
+              <stop offset="1" stop-color="#00ff7a" stop-opacity="1" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <h1>Química Neón Verde</h1>
+        <p class="lead">Un estilo visual para trabajos, portadas o fichas: oscuro, brillante y con iconografía científica.</p>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <div class="neon-text">Explora conceptos</div>
+            <p style="color:var(--muted);margin-top:8px">Átomos, reacciones, equipos de laboratorio y datos importantes presentados con estilo.</p>
+          </div>
+          <div style="text-align:right">
+            <a class="btn" href="#">Descargar plantilla</a>
+          </div>
+        </div>
+
+        <div style="margin-top:18px">
+          <div class="info-row"><div class="dot"></div><div><strong>Átomo:</strong> Partícula básica de la materia.</div></div>
+          <div class="info-row"><div class="dot"></div><div><strong>Mol:</strong> 6.022×10<sup>23</sup> partículas.</div></div>
+          <div class="info-row"><div class="dot"></div><div><strong>pH:</strong> Escala de acidez/alcali-nidad.</div></div>
+        </div>
+
+        <div style="margin-top:16px;color:var(--muted);font-size:0.92rem">Consejo: usa tipografías monospace para fórmulas y fuentes claras para títulos.</div>
+      </section>
+
+      <aside class="card bubble">
+        <div class="molecule">
+          <!-- Molécula estilizada -->
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ng" x1="0" x2="1">
+                <stop offset="0" stop-color="#9bffb8" />
+                <stop offset="1" stop-color="#00ff7a" />
+              </linearGradient>
+            </defs>
+
+            <!-- enlaces -->
+            <line x1="60" y1="70" x2="100" y2="40" stroke="url(#ng)" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+            <line x1="140" y1="70" x2="100" y2="40" stroke="url(#ng)" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+            <line x1="60" y1="70" x2="40" y2="110" stroke="url(#ng)" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+
+            <!-- átomos -->
+            <g fill="none" stroke="url(#ng)" stroke-width="2.6">
+              <circle cx="60" cy="70" r="18" opacity="0.96"/>
+              <circle cx="100" cy="40" r="18" opacity="0.96"/>
+              <circle cx="140" cy="70" r="18" opacity="0.96"/>
+              <circle cx="40" cy="110" r="14" opacity="0.96"/>
+            </g>
+
+            <!-- rellenos brillantes -->
+            <g>
+              <circle cx="60" cy="70" r="6" fill="#00ff7a" opacity="0.96"/>
+              <circle cx="100" cy="40" r="6" fill="#9bffb8" opacity="0.96"/>
+              <circle cx="140" cy="70" r="6" fill="#00ff7a" opacity="0.96"/>
+              <circle cx="40" cy="110" r="5" fill="#9bffb8" opacity="0.96"/>
+            </g>
+
+            <!-- brillo central -->
+            <ellipse cx="100" cy="80" rx="72" ry="40" fill="none" stroke="rgba(0,255,122,0.06)" />
+          </svg>
+        </div>
+
+        <div style="margin-top:8px;color:var(--muted);font-size:0.95rem">
+          <strong>Fórmula destacada:</strong>
+          <div style="font-family:monospace;margin-top:6px">E = &nbsp;mc<sup>2</sup> &nbsp;• &nbsp; n = m / M</div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+          <a class="btn" href="#">Ver más</a>
+          <a class="btn" href="#">Usar colores</a>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      Plantilla estilo <span style="color:var(--neon);font-weight:600">Neón Verde</span> — iconos y SVG listos para editar.
+    </footer>
+  </div>
+</body>
+</html>
