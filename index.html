@@ -1,192 +1,795 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Química Neón Verde</title>
-  <style>
-    /* Reset */
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termometría - Estilo Neon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Paleta */
-    :root{
-      --bg:#050607; /* negro profundo */
-      --panel:#071017; /* azul muy oscuro */
-      --neon:#00ff7a; /* verde neón */
-      --muted:#8da3a0;
-    }
+        body {
+            background: linear-gradient(135deg, #0f001a 0%, #1a0033 50%, #0a000f 100%);
+            color: #ff6600;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    body{
-      font-family:Inter,system-ui,Segoe UI,Roboto,Arial; 
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,122,0.04), transparent),
-                  radial-gradient(800px 400px at 90% 90%, rgba(0,255,122,0.03), transparent),
-                  var(--bg);
-      color:#e6fff6;
-      -webkit-font-smoothing:antialiased;
-      padding:36px;
-    }
+        /* Animaciones */
+        @keyframes glow-pulse {
+            0%, 100% {
+                text-shadow: 0 0 10px #ff6600, 0 0 20px #ff6600, 0 0 30px #ff3300;
+            }
+            50% {
+                text-shadow: 0 0 20px #ff6600, 0 0 30px #ff6600, 0 0 50px #ff3300, 0 0 70px #00ffff;
+            }
+        }
 
-    .container{
-      max-width:1000px;margin:0 auto;padding:36px;background:linear-gradient(180deg,rgba(255,255,255,0.01), rgba(255,255,255,0.005));border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-    }
+        @keyframes temperature-rise {
+            0% {
+                height: 20%;
+                background: #0066ff;
+            }
+            25% {
+                background: #00ccff;
+            }
+            50% {
+                height: 50%;
+                background: #ffff00;
+            }
+            75% {
+                background: #ff6600;
+            }
+            100% {
+                height: 80%;
+                background: #ff0000;
+            }
+        }
 
-    /* Cabecera neón */
-    header{display:flex;gap:20px;align-items:center}
-    .logo{
-      width:96px;height:96px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.3), rgba(255,255,255,0.02));backdrop-filter:blur(6px);border:1px solid rgba(0,255,122,0.08);
-      box-shadow:0 6px 24px rgba(0,255,122,0.08), 0 0 32px rgba(0,255,122,0.06);
-    }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
 
-    /* SVG stroke glow */
-    .logo svg{filter:drop-shadow(0 0 6px rgba(0,255,122,0.8)) drop-shadow(0 0 18px rgba(0,255,122,0.14));}
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-    h1{
-      font-size:2.05rem;line-height:1.05;letter-spacing:0.6px;
-      color:var(--neon);
-      text-shadow:
-        0 0 6px rgba(0,255,122,0.85),
-        0 0 18px rgba(0,255,122,0.45),
-        0 4px 20px rgba(0,0,0,0.7);
-      margin-bottom:6px;
-    }
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-    p.lead{color:var(--muted);margin-top:6px;font-size:0.95rem}
+        @keyframes rotate-spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    /* Tarjetas */
-    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:20px}
+        @keyframes border-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 102, 0, 0.3), inset 0 0 20px rgba(255, 51, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 102, 0, 0.6), inset 0 0 30px rgba(255, 102, 0, 0.2);
+            }
+        }
 
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
+        header {
+            background: rgba(15, 0, 26, 0.95);
+            border-bottom: 3px solid #ff6600;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 102, 0, 0.4);
+            animation: slide-in 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .neon-text{
-      color:var(--neon);
-      font-weight:600;
-      text-shadow:0 0 8px rgba(0,255,122,0.9), 0 0 22px rgba(0,255,122,0.2);
-    }
+        h1 {
+            font-size: 4em;
+            animation: glow-pulse 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #ff6600;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* Botón con borde de neón */
-    .btn{
-      display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid rgba(0,255,122,0.18);background:transparent;color:var(--neon);font-weight:600;cursor:pointer;text-decoration:none;transition:all .18s ease;
-      box-shadow:0 6px 24px rgba(0,255,122,0.04), inset 0 -6px 20px rgba(0,0,0,0.3);
-    }
-    .btn:hover{transform:translateY(-3px);box-shadow:0 12px 48px rgba(0,255,122,0.12)}
+        .subtitle {
+            color: #00ffff;
+            font-size: 1.4em;
+            text-shadow: 0 0 15px #00ffff;
+            animation: slide-in-right 1.2s ease-out;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* Molecula SVG grande */
-    .molecule{display:flex;align-items:center;justify-content:center;height:220px}
-    .molecule svg{width:100%;height:100%;max-width:420px;filter:drop-shadow(0 0 10px rgba(0,255,122,0.75))}
+        .tagline {
+            color: #ff00ff;
+            font-size: 1.1em;
+            margin-top: 10px;
+            text-shadow: 0 0 10px #ff00ff;
+            animation: slide-in-right 1.4s ease-out;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* Detalles y animacion de burbujas */
-    .bubble{position:relative}
-    .bubble::after{content:'';position:absolute;right:10px;bottom:8px;width:10px;height:10px;border-radius:50%;background:rgba(0,255,122,0.16);box-shadow:0 0 14px rgba(0,255,122,0.6);animation:float 3s infinite ease-in-out}
-    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+        .main-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+        }
 
-    /* Tabla de info */
-    .info-row{display:flex;gap:12px;align-items:center;margin:10px 0}
-    .dot{width:12px;height:12px;border-radius:50%;background:var(--neon);box-shadow:0 0 8px rgba(0,255,122,0.9)}
+        .neon-line {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff6600, #00ffff, #ff00ff, #ff6600, transparent);
+            margin: 40px 0;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+            animation: slide-in 1s ease-out;
+        }
 
-    footer{margin-top:22px;color:var(--muted);font-size:0.88rem;text-align:center}
+        .section {
+            margin-bottom: 50px;
+            animation: slide-in 1.2s ease-out;
+        }
 
-    /* Responsive */
-    @media (max-width:880px){.grid{grid-template-columns:1fr;margin-top:16px}.logo{width:76px;height:76px}.molecule{height:160px}}
-  </style>
+        .section-title {
+            font-size: 2.8em;
+            color: #ff3300;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px #ff3300, 0 0 30px #ff6600;
+            animation: glow-pulse 3s infinite;
+            border-bottom: 3px solid #ff6600;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '🌡 ';
+            margin-right: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: rgba(255, 102, 0, 0.08);
+            border: 2px solid #ff6600;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.15);
+            animation: border-glow 3s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 102, 0, 0.15);
+            box-shadow: 0 0 40px rgba(255, 102, 0, 0.4);
+            transform: translateY(-10px);
+        }
+
+        .card-title {
+            color: #00ffff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .card-content {
+            color: #d0d0d0;
+            line-height: 1.8;
+            font-size: 1em;
+        }
+
+        .thermometer {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff6600;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            margin: 15px 0;
+            height: 200px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .thermometer-fill {
+            width: 100%;
+            background: linear-gradient(to top, #ff0000, #ff6600, #ffff00, #00ccff, #0066ff);
+            animation: temperature-rise 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .thermometer-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff6600;
+            font-weight: bold;
+            z-index: 10;
+            text-shadow: 0 0 10px #ff6600;
+        }
+
+        .scales {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .scale-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: slide-in 1.3s ease-out;
+        }
+
+        .scale-box:hover {
+            background: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .scale-name {
+            color: #00ffff;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px #00ffff;
+        }
+
+        .scale-symbol {
+            color: #ff6600;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .scale-desc {
+            color: #b0b0b0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .formula {
+            background: rgba(255, 0, 255, 0.15);
+            border-left: 4px solid #ff00ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .conversion-table {
+            background: rgba(255, 102, 0, 0.1);
+            border: 2px solid #ff6600;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .conversion-table table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #d0d0d0;
+        }
+
+        .conversion-table th {
+            background: rgba(255, 102, 0, 0.2);
+            color: #00ffff;
+            padding: 12px;
+            border-bottom: 2px solid #ff6600;
+            text-shadow: 0 0 8px #00ffff;
+        }
+
+        .conversion-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+            text-align: center;
+        }
+
+        .conversion-table tr:hover {
+            background: rgba(255, 102, 0, 0.1);
+        }
+
+        .highlight {
+            color: #ff00ff;
+            text-shadow: 0 0 8px #ff00ff;
+            font-weight: bold;
+        }
+
+        .instruments {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .instrument-card {
+            background: rgba(255, 102, 0, 0.08);
+            border: 2px solid #ff6600;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: slide-in 1.4s ease-out;
+        }
+
+        .instrument-card:hover {
+            background: rgba(255, 102, 0, 0.15);
+            box-shadow: 0 0 35px rgba(255, 102, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .instrument-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .instrument-name {
+            color: #ff6600;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px #ff6600;
+        }
+
+        .instrument-desc {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .concept-list {
+            background: rgba(255, 102, 0, 0.06);
+            border: 2px solid #ff6600;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .concept-list h4 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-shadow: 0 0 8px #ff6600;
+        }
+
+        .concept-list ul {
+            list-style: none;
+        }
+
+        .concept-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+
+        .concept-list li:last-child {
+            border-bottom: none;
+        }
+
+        .concept-list li::before {
+            content: '▹ ';
+            color: #00ffff;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #ff6600;
+            border-top: 3px solid #ff6600;
+            margin-top: 60px;
+            background: rgba(15, 0, 26, 0.9);
+            box-shadow: 0 0 30px rgba(255, 102, 0, 0.2);
+            animation: slide-in 1.6s ease-out;
+        }
+
+        footer p {
+            text-shadow: 0 0 10px #ff6600;
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2, .scales, .instruments {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-3, .instruments {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
     <header>
-      <div class="logo" aria-hidden="true">
-        <!-- Matraz SVG estilizado -->
-        <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg" fill="none">
-          <path d="M20 6h24" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M26 10v6" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M38 10v6" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M18 20c0 8 6 14 8 20 2 6 0 12 0 12h12s-2-6 0-12c2-6 8-12 8-20H18z" stroke="url(#g)" stroke-width="2.5" stroke-linejoin="round"/>
-          <defs>
-            <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#9bffb8" stop-opacity="1" />
-              <stop offset="1" stop-color="#00ff7a" stop-opacity="1" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      <div>
-        <h1>Química Neón Verde</h1>
-        <p class="lead">Un estilo visual para trabajos, portadas o fichas: oscuro, brillante y con iconografía científica.</p>
-      </div>
+        <h1>🌡 TERMOMETRÍA 🌡</h1>
+        <div class="subtitle">Medición de la Temperatura</div>
+        <div class="tagline">« La ciencia de cuantificar el calor »</div>
     </header>
 
-    <main class="grid">
-      <section class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-          <div>
-            <div class="neon-text">Explora conceptos</div>
-            <p style="color:var(--muted);margin-top:8px">Átomos, reacciones, equipos de laboratorio y datos importantes presentados con estilo.</p>
-          </div>
-          <div style="text-align:right">
-            <a class="btn" href="#">Descargar plantilla</a>
-          </div>
+    <div class="neon-line"></div>
+
+    <div class="main-container">
+        <!-- Introducción -->
+        <div class="section">
+            <div class="section-title">¿Qué es la Termometría?</div>
+            <div class="card">
+                <div class="card-content">
+                    La <span class="highlight">termometría</span> es la rama de la física que se dedica a la medición y cuantificación de la temperatura. Estudia los métodos, instrumentos y escalas utilizados para determinar el nivel de calor o frío de un cuerpo o sustancia. Es fundamental en campos como la medicina, la meteorología, la industria y la investigación científica.
+                </div>
+            </div>
         </div>
 
-        <div style="margin-top:18px">
-          <div class="info-row"><div class="dot"></div><div><strong>Átomo:</strong> Partícula básica de la materia.</div></div>
-          <div class="info-row"><div class="dot"></div><div><strong>Mol:</strong> 6.022×10<sup>23</sup> partículas.</div></div>
-          <div class="info-row"><div class="dot"></div><div><strong>pH:</strong> Escala de acidez/alcali-nidad.</div></div>
+        <div class="neon-line"></div>
+
+        <!-- Conceptos Básicos -->
+        <div class="section">
+            <div class="section-title">Conceptos Fundamentales</div>
+            <div class="grid-2">
+                <div class="concept-list">
+                    <h4>Temperatura</h4>
+                    <ul>
+                        <li>Medida del nivel de <span class="highlight">agitación térmica</span> molecular</li>
+                        <li>Propiedad que indica cuán caliente o frío está un objeto</li>
+                        <li>Magnitud escalar (no tiene dirección)</li>
+                        <li>Se mide en grados de una escala</li>
+                        <li>Siempre fluye de caliente a frío</li>
+                    </ul>
+                </div>
+
+                <div class="concept-list">
+                    <h4>Calor</h4>
+                    <ul>
+                        <li>Energía que se transfiere entre cuerpos</li>
+                        <li>Forma de <span class="highlight">energía térmica</span> en tránsito</li>
+                        <li>Se transforma en trabajo o aumenta temperatura</li>
+                        <li>Unidad: Joule (J) o Caloría (cal)</li>
+                        <li>Diferente a la temperatura</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div style="margin-top:16px;color:var(--muted);font-size:0.92rem">Consejo: usa tipografías monospace para fórmulas y fuentes claras para títulos.</div>
-      </section>
+        <div class="neon-line"></div>
 
-      <aside class="card bubble">
-        <div class="molecule">
-          <!-- Molécula estilizada -->
-          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="ng" x1="0" x2="1">
-                <stop offset="0" stop-color="#9bffb8" />
-                <stop offset="1" stop-color="#00ff7a" />
-              </linearGradient>
-            </defs>
+        <!-- Escalas de Temperatura -->
+        <div class="section">
+            <div class="section-title">Escalas Termométricas</div>
+            <div class="scales">
+                <div class="scale-box">
+                    <div class="scale-name">CELSIUS</div>
+                    <div class="scale-symbol">°C</div>
+                    <div class="scale-desc">
+                        Escala centígrada. Punto de fusión del hielo: 0°C. Punto de ebullición del agua: 100°C. Más usada en ciencia.
+                    </div>
+                </div>
 
-            <!-- enlaces -->
-            <line x1="60" y1="70" x2="100" y2="40" stroke="url(#ng)" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
-            <line x1="140" y1="70" x2="100" y2="40" stroke="url(#ng)" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
-            <line x1="60" y1="70" x2="40" y2="110" stroke="url(#ng)" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+                <div class="scale-box">
+                    <div class="scale-name">FAHRENHEIT</div>
+                    <div class="scale-symbol">°F</div>
+                    <div class="scale-desc">
+                        Usada principalmente en EE.UU. Punto de fusión del hielo: 32°F. Punto de ebullición del agua: 212°F.
+                    </div>
+                </div>
 
-            <!-- átomos -->
-            <g fill="none" stroke="url(#ng)" stroke-width="2.6">
-              <circle cx="60" cy="70" r="18" opacity="0.96"/>
-              <circle cx="100" cy="40" r="18" opacity="0.96"/>
-              <circle cx="140" cy="70" r="18" opacity="0.96"/>
-              <circle cx="40" cy="110" r="14" opacity="0.96"/>
-            </g>
-
-            <!-- rellenos brillantes -->
-            <g>
-              <circle cx="60" cy="70" r="6" fill="#00ff7a" opacity="0.96"/>
-              <circle cx="100" cy="40" r="6" fill="#9bffb8" opacity="0.96"/>
-              <circle cx="140" cy="70" r="6" fill="#00ff7a" opacity="0.96"/>
-              <circle cx="40" cy="110" r="5" fill="#9bffb8" opacity="0.96"/>
-            </g>
-
-            <!-- brillo central -->
-            <ellipse cx="100" cy="80" rx="72" ry="40" fill="none" stroke="rgba(0,255,122,0.06)" />
-          </svg>
+                <div class="scale-box">
+                    <div class="scale-name">KELVIN</div>
+                    <div class="scale-symbol">K</div>
+                    <div class="scale-desc">
+                        Escala absoluta. Usada en física. Cero absoluto: 0 K. No usa símbolo de grado (°). Patrón internacional.
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div style="margin-top:8px;color:var(--muted);font-size:0.95rem">
-          <strong>Fórmula destacada:</strong>
-          <div style="font-family:monospace;margin-top:6px">E = &nbsp;mc<sup>2</sup> &nbsp;• &nbsp; n = m / M</div>
+        <div class="neon-line"></div>
+
+        <!-- Conversiones -->
+        <div class="section">
+            <div class="section-title">Fórmulas de Conversión</div>
+            
+            <div class="card">
+                <div class="card-title">De Celsius a Fahrenheit:</div>
+                <div class="formula">°F = (°C × 9/5) + 32</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">De Fahrenheit a Celsius:</div>
+                <div class="formula">°C = (°F - 32) × 5/9</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">De Celsius a Kelvin:</div>
+                <div class="formula">K = °C + 273.15</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">De Kelvin a Celsius:</div>
+                <div class="formula">°C = K - 273.15</div>
+            </div>
+
+            <div class="conversion-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Referencia</th>
+                            <th>Celsius (°C)</th>
+                            <th>Fahrenheit (°F)</th>
+                            <th>Kelvin (K)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cero Absoluto</td>
+                            <td>-273.15</td>
+                            <td>-459.67</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>Punto Fusión Hielo</td>
+                            <td>0</td>
+                            <td>32</td>
+                            <td>273.15</td>
+                        </tr>
+                        <tr>
+                            <td>Temperatura Ambiente</td>
+                            <td>20</td>
+                            <td>68</td>
+                            <td>293.15</td>
+                        </tr>
+                        <tr>
+                            <td>Temperatura Corporal</td>
+                            <td>37</td>
+                            <td>98.6</td>
+                            <td>310.15</td>
+                        </tr>
+                        <tr>
+                            <td>Punto Ebullición Agua</td>
+                            <td>100</td>
+                            <td>212</td>
+                            <td>373.15</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
-          <a class="btn" href="#">Ver más</a>
-          <a class="btn" href="#">Usar colores</a>
-        </div>
-      </aside>
-    </main>
+        <div class="neon-line"></div>
 
-    <footer>
-      Plantilla estilo <span style="color:var(--neon);font-weight:600">Neón Verde</span> — iconos y SVG listos para editar.
-    </footer>
-  </div>
-</body>
-</html>
+        <!-- Instrumentos de Medición -->
+        <div class="section">
+            <div class="section-title">Instrumentos de Medición</div>
+            <div class="instruments">
+                <div class="instrument-card">
+                    <div class="instrument-icon">🌡️</div>
+                    <div class="instrument-name">Termómetro de Mercurio</div>
+                    <div class="instrument-desc">Tubo capilar lleno de mercurio. Cambio de volumen indica temperatura. Rango: -35°C a 42°C. Muy preciso pero frágil.</div>
+                </div>
+
+                <div class="instrument-card">
+                    <div class="instrument-icon">🔴</div>
+                    <div class="instrument-name">Termómetro Clínico</div>
+                    <div class="instrument-desc">Usado en medicina. Mide temperatura corporal. Rango limitado: 35°C a 42°C. Tiene marcas de máxima.</div>
+                </div>
+
+                <div class="instrument-card">
+                    <div class="instrument-icon">📡</div>
+                    <div class="instrument-name">Termómetro Digital</div>
+                    <div class="instrument-desc">Usa sensores eléctricos. Lectura rápida y precisa. Pantalla digital. Muy usado actualmente. Amplio rango.</div>
+                </div>
+
+                <div class="instrument-card">
+                    <div class="instrument-icon">🌡️‍♂️</div>
+                    <div class="instrument-name">Termómetro de Resistencia</div>
+                    <div class="instrument-desc">RTD (Resistance Temperature Detector). Usa cambio de resistencia. Muy preciso. Usado en laboratorios.</div>
+                </div>
+
+                <div class="instrument-card">
+                    <div class="instrument-icon">🔥</div>
+                    <div class="instrument-name">Termómetro Infrarrojo</div>
+                    <div class="instrument-desc">Mide radiación térmica. Sin contacto. Lectura instantánea. Ideal para objetos en movimiento o calientes.</div>
+                </div>
+
+                <div class="instrument-card">
+                    <div class="instrument-icon">⚙️</div>
+                    <div class="instrument-name">Termopar</div>
+                    <div class="instrument-desc">Dos metales unidos. Genera voltaje proporcional a temperatura. Rango muy amplio. Muy resistente.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-line"></div>
+
+        <!-- Propiedades Termométricas -->
+        <div class="section">
+            <div class="section-title">Propiedades Termométricas</div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">Expansión Térmica</div>
+                    <div class="card-content">Los materiales cambian de tamaño con la temperatura. Los sólidos se dilatan uniformemente. Se aprovecha en termómetros de vidrio con mercurio o alcohol.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Resistencia Eléctrica</div>
+                    <div class="card-content">La resistencia de algunos metales cambia con la temperatura. Base de los termómetros de resistencia (RTD). Cambio lineal y predecible.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Fuerza Electromotriz</div>
+                    <div class="card-content">Dos metales diferentes generan voltaje proporcional a la diferencia de temperatura. Principio de los termopares. Muy sensible.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Radiación Térmica</div>
+                    <div class="card-content">Los cuerpos emiten radiación infrarroja según su temperatura. Ley de Stefan-Boltzmann. Base de termómetros infrarrojos.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-line"></div>
+
+        <!-- Aplicaciones -->
+        <div class="section">
+            <div class="section-title">Aplicaciones Prácticas</div>
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-title">⚕️ Medicina</div>
+                    <div class="card-content">Medición de temperatura corporal para diagnóstico. Detección de fiebre. Monitoreo en cirugías.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🌤️ Meteorología</div>
+                    <div class="card-content">Registro de temperaturas atmosféricas. Predicción del clima. Estaciones meteorológicas.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🏭 Industria</div>
+                    <div class="card-content">Control de procesos. Refrigeración. Calefacción. Hornos. Manufactura.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🧪 Laboratorio</div>
+                    <div class="card-content">Experimentos científicos. Calibración de equipos. Investigación en física y química.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">❄️ Sistemas HVAC</div>
+                    <div class="card-content">Aire acondicionado. Calefacción central. Control de clima en edificios.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🔧 Mantenimiento</div>
+                    <div class="card-content">Diagnóstico de máquinas. Detección de fallos. Termografía infrarroja.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-line"></div>
+
+        <!-- Factores que Afectan -->
+        <div class="section">
+            <div class="section-title">Factores que Afectan la Medición</div>
+            <div class="grid-2">
+                <div class="concept-list">
+                    <h4>Errores Sistemáticos</h4>
+                    <ul>
+                        <li><span class="highlight">Calibración incorrecta</span> del instrumento</li>
+                        <li>Paralaje en la lectura del termómetro</li>
+                        <li>Variación de la precisión con el tiempo</li>
+                        <li>Influencia del ambiente externo</li>
+                        <li>Contacto térmico deficiente</li>
+                    </ul>
+                </div>
+
+                <div class="concept-list">
+                    <h4>Errores Aleatorios</h4>
+                    <ul>
+                        <li>Fluctuaciones en la temperatura</li>
+                        <li>Vibración del instrumento</li>
+                        <li>Cambios en la presión atmosférica</li>
+                        <li>Variabilidad en la lectura humana</li>
+                        <li>Interferencia electromagnética</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-line"></div>
+
+        <!-- Puntos de Referencia -->
+        <div class="section">
+            <div class="section-title">Puntos Fijos de Referencia</div>
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-title">Cero Absoluto</div>
+                    <div class="formula">0 K = -273.15°C</div>
+                    <div class="card-content">Temperatura teórica más baja posible. No hay movimiento molecular. Límite inferior de temperatura.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Punto Triple del Agua</div>
+                    <div class="formula">273.16 K = 0.01°C</div>
+                    <div class="card-content">Temperatura donde coexisten sólido, líquido y gas. Punto de calibración estándar internacional.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Punto de Fusión Hielo</div>
+                    <div class="formula">273.15 K = 0°C</div>
+                    <div class="card-content">Transición de hielo a agua líquida. Referencia común. Punto fijo fundamental.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Punto de Ebullición Agua</div>
+                    <div class="formula">373.15 K = 100°C</div>
